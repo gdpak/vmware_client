@@ -19,9 +19,11 @@ from cluster.client import genesis_utils
 from cluster.client.genesis.networking import esx_dvs_helper as helper
 
 FLAGS = gflags.FLAGS
-
-
 pyvmomi_socket_timeout_secs = 300
+gflags.DEFINE_string(
+        "esx_port_key_external_id_marker",
+        "extId:",
+        "String identifier for external ID")
 
 def get_user_credentials(host_ip=None):
   """
@@ -287,6 +289,38 @@ class BaseEsxHostObject(object):
     """
     return self.host_obj.hardware.systemInfo.uuid
 
+  def get_port_key_from_external_id(self, portgroup):
+    from xml.etree import ElementTree
+    if isinstance(portgroup, str):
+        external_id_marker = FLAGS.esx_port_key_external_id_marker
+        if portgroup.startswith(external_id_marker):
+            portgroup = portgroup[len(external_id_marker):]
+            print("portgroup: %s" %portgroup)
+        else:
+            errStr = "port ID is not in external ID Format %s" % portgroup
+            return (False, errStr)
+    else:
+        errStr = "port ID is not in external ID Format %s" % portgroup
+        return (False, errStr)
+
+    host_ip = FLAGS.hypervisor_internal_ip
+    ssh_client = SSHClient(host_ip, FLAGS.hypervisor_username,
+            private_key=FLAGS.host_ssh_key)
+    ret, stdout, stderr = ssh_client.execute(
+            "localcli --formatter=xml network ip interface list ")
+    if ret != 0:
+        errstr = "failed in executing network ip interface list"
+        print (errstr)
+        return (False, errstr)
+    network_ip_list = ElementTree.fromstring(stdout)
+    root = network_ip_list.find('root')[0]
+    nics = root.findall('structure')
+    for nic in nics:
+        for nic_keys in nic.items():
+            for nic_attribs in nic_keys.attrib.iter():
+                print (nic_attribs.tag, nic_attribs.attrib, nic_atttribs.text)
+
+
 def get_portgroup_mor(host_ip, portgroup_name):
   ret, vcenter = helper.get_vcenter_object()
   if not ret:
@@ -324,9 +358,6 @@ def create_vnic(host_ip, ip_address, netmask, host_physical_network):
     return False
   print(vmk_id)
 
-def get_opaque_network_id(host_ip, external_id, switch_id):
-    pass
-
 
 def get_portkey_of_host_interface(host_ip, host_physical_network):
     ret, portgroup, host_obj = get_portgroup_mor(host_ip, host_physical_network)
@@ -336,7 +367,6 @@ def get_portkey_of_host_interface(host_ip, host_physical_network):
     portgroup_key = portgroup.key
 
     port_key, external_id = None, None
-    print(host_obj.configManager.networkSystem.networkConfig.vnic)
     all_vmknics = host_obj.configManager.networkSystem.networkInfo.vnic
     for vmk in all_vmknics:
         if not vmk.spec.distributedVirtualPort:
@@ -351,7 +381,7 @@ def get_portkey_of_host_interface(host_ip, host_physical_network):
         return (False, "Failed to fidn port key")
     if not external_id:
         return (True, port_key)
-    return (True, "extId:"+external_id)
+    return (True, FLAGS.esx_port_key_external_id_marker+external_id)
 
 
 '''
@@ -369,3 +399,5 @@ get_portgroup_mor("10.47.242.69", 'DPG-HOST-BP')
 ret, pk = get_portkey_of_host_interface("10.47.242.69", 'DPG-HOST-BP')
 if ret:
   print("PK: %s" % pk)
+base_host = BaseEsxHostObject("192.168.5.1")
+base_host.get_port_key_from_external_id(portgroup=pk)

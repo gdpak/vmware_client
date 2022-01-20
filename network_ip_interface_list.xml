@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<output xmlns:esxcli="http://www.vmware.com/Products/ESX/5.0/esxcli">
+   <meta-data>
+      <meta-data-field name="fields:NetworkInterface" value="Name,MAC Address,Enabled,Portset,Portgroup,Netstack Instance,VDS Name,VDS UUID,VDS Port,VDS Connection,Opaque Network ID,Opaque Network Type,External ID,MTU,TSO MSS,RXDispQueue Size,Port ID"/>
+      <meta-data-field name="header:NetworkInterface" value="&#37;Name&#37;"/>
+   </meta-data>
+   <root>
+      <list type="structure">
+            <structure typeName="NetworkInterface">
+               <field name="Enabled">
+                  <boolean>true</boolean>
+               </field>
+               <field name="External ID">
+                  <string>N/A</string>
+               </field>
+               <field name="MAC Address">
+                  <string>00:25:90:dd:e4:04</string>
+               </field>
+               <field name="MTU">
+                  <integer>1500</integer>
+               </field>
+               <field name="Name">
+                  <string>vmk0</string>
+               </field>
+               <field name="Netstack Instance">
+                  <string>defaultTcpipStack</string>
+               </field>
+               <field name="Opaque Network ID">
+                  <string>N/A</string>
+               </field>
+               <field name="Opaque Network Type">
+                  <string>N/A</string>
+               </field>
+               <field name="Port ID">
+                  <integer>67108881</integer>
+               </field>
+               <field name="Portgroup">
+                  <string>N/A</string>
+               </field>
+               <field name="Portset">
+                  <string>DvsPortset-0</string>
+               </field>
+               <field name="RXDispQueue Size">
+                  <integer>2</integer>
+               </field>
+               <field name="TSO MSS">
+                  <integer>65535</integer>
+               </field>
+               <field name="VDS Connection">
+                  <integer>1074643468</integer>
+               </field>
+               <field name="VDS Name">
+                  <string>DeepDistSwitch</string>
+               </field>
+               <field name="VDS Port">
+                  <string>2</string>
+               </field>
+               <field name="VDS UUID">
+                  <string>50 3b 67 f5 e9 7e cd ee-72 3b 23 55 48 7d d3 3b</string>
+               </field>
+            </structure>
+            <structure typeName="NetworkInterface">
+               <field name="Enabled">
+                  <boolean>true</boolean>
+               </field>
+               <field name="External ID">
+                  <string>N/A</string>
+               </field>
+               <field name="MAC Address">
+                  <string>00:50:56:6e:8f:b3</string>
+               </field>
+               <field name="MTU">
+                  <integer>1500</integer>
+               </field>
+               <field name="Name">
+                  <string>vmk1</string>
+               </field>
+               <field name="Netstack Instance">
+                  <string>defaultTcpipStack</string>
+               </field>
+               <field name="Opaque Network ID">
+                  <string>N/A</string>
+               </field>
+               <field name="Opaque Network Type">
+                  <string>N/A</string>
+               </field>
+               <field name="Port ID">
+                  <integer>134217746</integer>
+               </field>
+               <field name="Portgroup">
+                  <string>ntnx-internal-vmk</string>
+               </field>
+               <field name="Portset">
+                  <string>vSwitchNutanix</string>
+               </field>
+               <field name="RXDispQueue Size">
+                  <integer>2</integer>
+               </field>
+               <field name="TSO MSS">
+                  <integer>65535</integer>
+               </field>
+               <field name="VDS Connection">
+                  <integer>-1</integer>
+               </field>
+               <field name="VDS Name">
+                  <string>N/A</string>
+               </field>
+               <field name="VDS Port">
+                  <string>N/A</string>
+               </field>
+               <field name="VDS UUID">
+                  <string>N/A</string>
+               </field>
+            </structure>
+            <structure typeName="NetworkInterface">
+               <field name="Enabled">
+                  <boolean>true</boolean>
+               </field>
+               <field name="External ID">
+                  <string>N/A</string>
+               </field>
+               <field name="MAC Address">
+                  <string>00:50:56:6f:ed:28</string>
+               </field>
+               <field name="MTU">
+                  <integer>1500</integer>
+               </field>
+               <field name="Name">
+                  <string>vmk2</string>
+               </field>
+               <field name="Netstack Instance">
+                  <string>defaultTcpipStack</string>
+               </field>
+               <field name="Opaque Network ID">
+                  <string>N/A</string>
+               </field>
+               <field name="Opaque Network Type">
+                  <string>N/A</string>
+               </field>
+               <field name="Port ID">
+                  <integer>67108897</integer>
+               </field>
+               <field name="Portgroup">
+                  <string>N/A</string>
+               </field>
+               <field name="Portset">
+                  <string>DvsPortset-0</string>
+               </field>
+               <field name="RXDispQueue Size">
+                  <integer>2</integer>
+               </field>
+               <field name="TSO MSS">
+                  <integer>65535</integer>
+               </field>
+               <field name="VDS Connection">
+                  <integer>1194979350</integer>
+               </field>
+               <field name="VDS Name">
+                  <string>DeepDistSwitch</string>
+               </field>
+               <field name="VDS Port">
+                  <string>32</string>
+               </field>
+               <field name="VDS UUID">
+                  <string>50 3b 67 f5 e9 7e cd ee-72 3b 23 55 48 7d d3 3b</string>
+               </field>
+            </structure>
+            <structure typeName="NetworkInterface">
+               <field name="Enabled">
+                  <boolean>true</boolean>
+               </field>
+               <field name="External ID">
+                  <string>e05d2b07-346f-48cc-b3b6-a58e48f92bcd</string>
+               </field>
+               <field name="MAC Address">
+                  <string>00:50:56:66:e1:e1</string>
+               </field>
+               <field name="MTU">
+                  <integer>1500</integer>
+               </field>
+               <field name="Name">
+                  <string>vmk3</string>
+               </field>
+               <field name="Netstack Instance">
+                  <string>defaultTcpipStack</string>
+               </field>
+               <field name="Opaque Network ID">
+                  <string>e647f7a5-60f6-4e15-b796-8019ec499d9d</string>
+               </field>
+               <field name="Opaque Network Type">
+                  <string>nsx.LogicalSwitch</string>
+               </field>
+               <field name="Port ID">
+                  <integer>67108899</integer>
+               </field>
+               <field name="Portgroup">
+                  <string>N/A</string>
+               </field>
+               <field name="Portset">
+                  <string>DvsPortset-0</string>
+               </field>
+               <field name="RXDispQueue Size">
+                  <integer>2</integer>
+               </field>
+               <field name="TSO MSS">
+                  <integer>65535</integer>
+               </field>
+               <field name="VDS Connection">
+                  <integer>-1</integer>
+               </field>
+               <field name="VDS Name">
+                  <string>N/A</string>
+               </field>
+               <field name="VDS Port">
+                  <string>N/A</string>
+               </field>
+               <field name="VDS UUID">
+                  <string>N/A</string>
+               </field>
+            </structure>
+            <structure typeName="NetworkInterface">
+               <field name="Enabled">
+                  <boolean>true</boolean>
+               </field>
+               <field name="External ID">
+                  <string>678300e0-f2de-4a71-8ac5-41fec76ad9ff</string>
+               </field>
+               <field name="MAC Address">
+                  <string>00:50:56:66:2e:f9</string>
+               </field>
+               <field name="MTU">
+                  <integer>1500</integer>
+               </field>
+               <field name="Name">
+                  <string>vmk4</string>
+               </field>
+               <field name="Netstack Instance">
+                  <string>defaultTcpipStack</string>
+               </field>
+               <field name="Opaque Network ID">
+                  <string>e647f7a5-60f6-4e15-b796-8019ec499d9d</string>
+               </field>
+               <field name="Opaque Network Type">
+                  <string>nsx.LogicalSwitch</string>
+               </field>
+               <field name="Port ID">
+                  <integer>67108900</integer>
+               </field>
+               <field name="Portgroup">
+                  <string>N/A</string>
+               </field>
+               <field name="Portset">
+                  <string>DvsPortset-0</string>
+               </field>
+               <field name="RXDispQueue Size">
+                  <integer>2</integer>
+               </field>
+               <field name="TSO MSS">
+                  <integer>65535</integer>
+               </field>
+               <field name="VDS Connection">
+                  <integer>-1</integer>
+               </field>
+               <field name="VDS Name">
+                  <string>N/A</string>
+               </field>
+               <field name="VDS Port">
+                  <string>N/A</string>
+               </field>
+               <field name="VDS UUID">
+                  <string>N/A</string>
+               </field>
+            </structure>
+      </list>
+   </root>
+</output>

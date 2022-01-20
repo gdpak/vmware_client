@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<output xmlns:esxcli="http://www.vmware.com/Products/ESX/5.0/esxcli">
+   <meta-data>
+      <meta-data-field name="fields:IPv4Interface" value="Name,IPv4 Address,IPv4 Netmask,IPv4 Broadcast,Address Type,Gateway,DHCP DNS"/>
+   </meta-data>
+   <root>
+      <list type="structure">
+            <structure typeName="IPv4Interface">
+               <field name="Address Type">
+                  <string>STATIC</string>
+               </field>
+               <field name="DHCP DNS">
+                  <boolean>false</boolean>
+               </field>
+               <field name="Gateway">
+                  <string>0.0.0.0</string>
+               </field>
+               <field name="IPv4 Address">
+                  <string>10.47.242.69</string>
+               </field>
+               <field name="IPv4 Broadcast">
+                  <string>10.47.255.255</string>
+               </field>
+               <field name="IPv4 Netmask">
+                  <string>255.255.240.0</string>
+               </field>
+               <field name="Name">
+                  <string>vmk0</string>
+               </field>
+            </structure>
+            <structure typeName="IPv4Interface">
+               <field name="Address Type">
+                  <string>STATIC</string>
+               </field>
+               <field name="DHCP DNS">
+                  <boolean>false</boolean>
+               </field>
+               <field name="Gateway">
+                  <string>0.0.0.0</string>
+               </field>
+               <field name="IPv4 Address">
+                  <string>192.168.5.1</string>
+               </field>
+               <field name="IPv4 Broadcast">
+                  <string>192.168.5.255</string>
+               </field>
+               <field name="IPv4 Netmask">
+                  <string>255.255.255.0</string>
+               </field>
+               <field name="Name">
+                  <string>vmk1</string>
+               </field>
+            </structure>
+            <structure typeName="IPv4Interface">
+               <field name="Address Type">
+                  <string>STATIC</string>
+               </field>
+               <field name="DHCP DNS">
+                  <boolean>false</boolean>
+               </field>
+               <field name="Gateway">
+                  <string>0.0.0.0</string>
+               </field>
+               <field name="IPv4 Address">
+                  <string>172.17.0.1</string>
+               </field>
+               <field name="IPv4 Broadcast">
+                  <string>172.17.255.255</string>
+               </field>
+               <field name="IPv4 Netmask">
+                  <string>255.255.0.0</string>
+               </field>
+               <field name="Name">
+                  <string>vmk2</string>
+               </field>
+            </structure>
+            <structure typeName="IPv4Interface">
+               <field name="Address Type">
+                  <string>STATIC</string>
+               </field>
+               <field name="DHCP DNS">
+                  <boolean>false</boolean>
+               </field>
+               <field name="Gateway">
+                  <string>0.0.0.0</string>
+               </field>
+               <field name="IPv4 Address">
+                  <string>172.16.9.1</string>
+               </field>
+               <field name="IPv4 Broadcast">
+                  <string>172.16.255.255</string>
+               </field>
+               <field name="IPv4 Netmask">
+                  <string>255.255.0.0</string>
+               </field>
+               <field name="Name">
+                  <string>vmk3</string>
+               </field>
+            </structure>
+            <structure typeName="IPv4Interface">
+               <field name="Address Type">
+                  <string>STATIC</string>
+               </field>
+               <field name="DHCP DNS">
+                  <boolean>false</boolean>
+               </field>
+               <field name="Gateway">
+                  <string>0.0.0.0</string>
+               </field>
+               <field name="IPv4 Address">
+                  <string>172.16.10.1</string>
+               </field>
+               <field name="IPv4 Broadcast">
+                  <string>172.16.255.255</string>
+               </field>
+               <field name="IPv4 Netmask">
+                  <string>255.255.0.0</string>
+               </field>
+               <field name="Name">
+                  <string>vmk4</string>
+               </field>
+            </structure>
+      </list>
+   </root>
+</output>
