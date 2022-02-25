@@ -15,16 +15,18 @@ import util.hypervisor.base.esx_flags  # pylint: disable=unused-import
 from util.misc.retry import retry_with_exp_backoff
 from util.net.ssh_client import SSHClient
 from util.hypervisor.esx_host import get_vcenter
+from util.hypervisor.esx_utils import EsxHostObject
 from cluster.client import genesis_utils
 from cluster.client.genesis.networking import esx_dvs_helper as helper
 
 FLAGS = gflags.FLAGS
 pyvmomi_socket_timeout_secs = 300
+'''
 gflags.DEFINE_string(
         "esx_port_key_external_id_marker",
         "extId:",
         "String identifier for external ID")
-
+'''
 def get_user_credentials(host_ip=None):
   """
   User credentials for the object.
@@ -328,9 +330,27 @@ def get_portgroup_mor(host_ip, portgroup_name):
   host_obj = vcenter.lookup_host_by_ip(host_ip)
   if not host_obj:
     return (False, None, None)
+  network_mors = host_obj.network
+  dvs_mors = []
+  for network_mor in network_mors:
+    if isinstance(network_mor, vim.dvs.DistributedVirtualPortgroup):
+      dvs_mors.append(network_mor)
+  dvs_name_config_map = vcenter.query_object_properties(dvs_mors, ["name", "config"])
+
+  print (dvs_name_config_map)
+  return 
+  
+
+  for pswitch in proxy_switch:
+    print(dir(pswitch.spec))
+  return
   for dvs in vcenter.all_virtual_distributed_switches:
     for portgroup in dvs.portgroup:
       if portgroup.name == portgroup_name:
+        print(dir(portgroup))
+        print(portgroup.name, portgroup.tag)
+        print(portgroup.config)
+        print(portgroup.configStatus)
         return (True, portgroup, host_obj)
       #print(portgroup.config.distributedVirtualSwitch.uuid, portgroup.name, portgroup.key)
   return (False, "port group not found", None)
@@ -383,7 +403,69 @@ def get_portkey_of_host_interface(host_ip, host_physical_network):
         return (True, port_key)
     return (True, FLAGS.esx_port_key_external_id_marker+external_id)
 
+def get_portgroup_nsx_backing(host_ip, port_group):
+  esx_obj = EsxHostObject(host_ip)
+  host_obj = esx_obj.get_host()
+  
+  if not host_obj:
+    return False
+  for ps in (host_obj.configManager.networkSystem.networkInfo.proxySwitch):
+    for tz in ps.transportZones:
+      print(tz.uuid, tz.type)
+  network_mors = host_obj.network
+  dvs_mors = []
+  for network_mor in network_mors:
+    if isinstance(network_mor, vim.dvs.DistributedVirtualPortgroup):
+      dvs_mors.append(network_mor)
+  for dvs in dvs_mors:
+    print(dvs.name, dvs.config)
+  return True
 
+def validate_nsx_t_portgroup(host_ip, port_group):
+  err_msg = "host: %s portgroup: %s " % (host_ip, port_group)
+  warning_msg_unsupported_pyvim_client = ("pvVmomi version does not support "
+                                          "nsx-t attributes")
+  esx_obj = EsxHostObject(host_ip)
+  if not esx_obj:
+    return (False, err_msg + "Esx host object does not exist")
+  host_obj = esx_obj.get_host()
+  if not host_obj:
+    return (False, err_msg + "host object does not exist")
+  nets = host_obj.network
+  if not nets:
+    return (False, err_msg + "network prop retreival failed")
+  dvs_networks = []
+  for net in nets:
+    if isinstance(net, vim.dvs.DistributedVirtualPortgroup):
+      dvs_networks.append(net)
+  nsx_tz_to_validate = None
+  pgBackingType = None
+  for dvs_network in dvs_networks:
+     if dvs_network.name == port_group:
+       if not hasattr(dvs_network.config, 'backingType'):
+         return (False, warning_msg_unsupported_pyvim_client)
+       backingType = dvs_network.config.backingType
+       if backingType == "nsx":
+         pgBackingType = "nsx"
+         if not hasattr(dvs_network.config, 'transportZoneUuid'):
+           return (False, warning_msg_unsupported_pyvim_client)
+         nsx_tz_to_validate = dvs_network.config.transportZoneUuid
+         break
+
+  if pgBackingType == "nsx" and not nsx_tz_to_validate:
+    return (False, warning_msg_unsupported_pyvim_client)
+  elif not nsx_tz_to_validate:
+    return (True, None)
+
+  proxySwitches = host_obj.configManager.networkSystem.networkInfo.proxySwitch
+  for proxySwitch in proxySwitches:
+    if not hasattr(proxySwitch, 'transportZones'):
+      return (False, warning_msg_unsupported_pyvim_client)
+    for tz in proxySwitch.transportZones:
+      if tz.uuid == nsx_tz_to_validate and tz.type != 'vlan':
+        return (False, err_msg + "transport type is %s" % tz.type)
+  return (True, nsx_tz_to_validate)
+  
 '''
 base_host = BaseEsxHostObject("10.46.1.214", user="administrator@vsphere.local",
                               password="Nutanix/4u")
@@ -395,9 +477,15 @@ host_obj=base_host.get_host()
 all_vmknics = host_obj.configManager.networkSystem.networkInfo.vnic
 print (all_vmknics)
 get_portgroup_mor("10.47.242.69", 'DPG-HOST-BP')
-'''
 ret, pk = get_portkey_of_host_interface("10.47.242.69", 'DPG-HOST-BP')
 if ret:
   print("PK: %s" % pk)
 base_host = BaseEsxHostObject("192.168.5.1")
 base_host.get_port_key_from_external_id(portgroup=pk)
+'''
+#get_portgroup_mor("10.47.242.69", 'DPG-HOST-VXLAM')
+#get_portgroup_nsx_backing("10.47.242.69", 'DPG-HOST-VXLAM')
+pg_list = ['DPG-HOST-VXLAM', 'DPG-HOST-BP', 'VM Network']
+for pg in pg_list:
+  ret, msg = validate_nsx_t_portgroup("10.47.242.69", pg)
+  print (ret, msg)
